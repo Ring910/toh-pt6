@@ -5,6 +5,9 @@ on:
     branches: [master, main]
   pull_request:
     branches: [master, main]
+    
+env:
+  CODECOV_TOKEN: 8b82b4ba-3230-44c9-b953-a2887b91b8e8
 
 jobs:
   build:
