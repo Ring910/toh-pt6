@@ -22,7 +22,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run test
-      - name: Upload coverage reports to Codecov
+      - name: Upload coverage reports to lcov
         uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           lcov-file: ./coverage/angular.io-example/lcov.info
