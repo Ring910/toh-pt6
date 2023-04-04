@@ -23,6 +23,6 @@ jobs:
       - run: npm ci
       - run: npm run test
       - name: Upload coverage reports to Codecov
-        uses: romeovs/lcov-reporter-action@v0.2.16
+        uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           lcov-file: ./coverage/angular.io-example/lcov.info
