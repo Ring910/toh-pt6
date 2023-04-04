@@ -26,3 +26,5 @@ jobs:
         uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           lcov-file: ./coverage/angular.io-example/lcov.info
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
