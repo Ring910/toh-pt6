@@ -7,7 +7,7 @@ on:
       - "feature/testActions"
 
 env:
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV }}
 
 jobs:
   build:
