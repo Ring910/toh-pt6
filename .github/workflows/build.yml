@@ -6,6 +6,9 @@ on:
       - main
       - "feature/testActions"
 
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
