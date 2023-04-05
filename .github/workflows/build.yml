@@ -2,9 +2,13 @@ name: build
 
 on:
   push:
-    branches: [master, main]
+    branches:
+      - main
+      - "feature/testActions"
   pull_request:
-    branches: [master, main]
+    branches:
+      - main
+      - "feature/testActions"
 
 jobs:
   build:
