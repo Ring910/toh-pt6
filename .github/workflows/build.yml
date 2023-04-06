@@ -26,3 +26,5 @@ jobs:
         uses: codecov/codecov-action@v3.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+      - name: summary
+        run: echo "### Hello" >> $GITHUB_STEP_SUMMARY
