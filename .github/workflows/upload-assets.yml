@@ -18,10 +18,8 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
             });
-
-            console.log(latestRelease)
  
-            await github.rest.repos.uploadReleaseAsset({
+            let uploadRelease = await github.rest.repos.uploadReleaseAsset({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
@@ -31,6 +29,8 @@ jobs:
                   'content-type': 'application/zip',
                 }
             });
+            
+            console.log(uploadRelease)
             
             let fs = require('fs');
             fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/test.zip`, Buffer.from('./test.zip'));
