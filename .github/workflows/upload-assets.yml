@@ -24,11 +24,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
             });
-            
-            if(!context.payload.workflow_run.id){
-              console.log(context.payload.workflow_run.id)
-            }
-            
+
             console.log(${{inputs.latest-release-tag}})
             
             let uploadRelease = await github.rest.repos.uploadReleaseAsset({
