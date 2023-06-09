@@ -19,10 +19,16 @@ jobs:
                 const res = await github.rest.repos.createRelease({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                tag_name: 'v1.0.4',
-                name: 'v1.0.4',
+                tag_name: 'v1.0.5',
+                name: 'v1.0.5',
               });
               console.log(res)
               }catch(error){
                 core.setFailed(error.message);
               }
+  
+  upload-assets:
+    needs: create-release-tag
+    uses: ./.github/workflows/upload-assests.yml
+    with:
+      latest-release-tag: 'v1.0.5'
