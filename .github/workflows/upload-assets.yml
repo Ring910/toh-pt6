@@ -24,8 +24,6 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
             });
-
-            console.log(${{inputs.latest-release-tag}})
             
             let uploadRelease = await github.rest.repos.uploadReleaseAsset({
                 owner: context.repo.owner,
