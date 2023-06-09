@@ -29,6 +29,6 @@ jobs:
   
   upload-assets:
     needs: create-release-tag
-    uses: ./.github/workflows/upload-assests.yml
+    uses: ./.github/workflows/upload-assets.yml
     with:
       latest-release-tag: 'v1.0.5'
