@@ -1,7 +1,7 @@
 name: Upload Artifact Release
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       latest-release-tag:
         description: "Tag name of the latest release"
