@@ -1,0 +1,36 @@
+name: Upload Artifact Release
+
+on:
+  workflow_run:
+    workflows: [Create Release]
+    types: [completed]
+
+jobs:
+  upload-artifacts:
+    name: "upload artifacts to release"
+    runs-on: [self-hosted, Windows, build]
+    steps:
+      - name: "upload artifacts"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let latestRelease = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+            });
+
+            console.log(latestRelease)
+ 
+            await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: latestRelease.data.id,
+                name: 'test.zip',
+                data: './test.zip',
+                headers:{
+                  'content-type': 'application/zip',
+                }
+            });
+            
+            let fs = require('fs');
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/test.zip`, Buffer.from('./test.zip'));
