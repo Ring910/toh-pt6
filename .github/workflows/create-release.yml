@@ -19,8 +19,8 @@ jobs:
                 const res = await github.rest.repos.createRelease({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                tag_name: 'v1.0.8',
-                name: 'v1.0.8',
+                tag_name: 'v1.0.9',
+                name: 'v1.0.9',
               });
               }catch(error){
                 core.setFailed(error.message);
@@ -30,4 +30,4 @@ jobs:
     needs: create-release-tag
     uses: ./.github/workflows/upload-assets.yml
     with:
-      latest-release-tag: 'v1.0.8'
+      latest-release-tag: 'v1.0.9'
