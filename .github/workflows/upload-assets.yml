@@ -25,7 +25,10 @@ jobs:
                 repo: context.repo.repo,
             });
             
-            console.log(context.payload.workflow_run.id)
+            if(!context.payload.workflow_run.id){
+              console.log(context.payload.workflow_run.id)
+            }
+            
             console.log(${{inputs.latest-release-tag}})
             
             let uploadRelease = await github.rest.repos.uploadReleaseAsset({
