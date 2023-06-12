@@ -32,7 +32,7 @@ jobs:
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
                 name: test + '.zip',
-                data: ./test,
+                data: './test',
                 headers:{
                   'content-type': 'application/zip',
                 },
