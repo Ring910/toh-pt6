@@ -1,13 +1,7 @@
 name: build
 
 on:
-  push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
-    
-env:
-  CODECOV_TOKEN: 8b82b4ba-3230-44c9-b953-a2887b91b8e8
+  workflow_dispatch:
 
 jobs:
   build:
@@ -51,9 +45,3 @@ jobs:
               }catch(error){
                 core.setFailed(error.message);
               }
-       
-#   upload-assets:
-#     needs: create-release-tag
-#     uses: ./.github/workflows/upload-assets.yml
-#     with:
-#       latest-release-tag: 'v1.0.11'
