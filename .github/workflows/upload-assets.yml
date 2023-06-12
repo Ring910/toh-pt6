@@ -21,7 +21,7 @@ jobs:
             path: ./test
         - name: check output
           run: |
-            echo steps.download.outputs
+            echo "steps.download.outputs"
         - name: "upload artifacts"
           uses: actions/github-script@v6
           with:
@@ -36,7 +36,7 @@ jobs:
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
                 name: 'test.zip',
-                data: ./test.zip,
+                data: './test.zip',
                 headers:{
                   'content-type': 'application/zip',
                 },
