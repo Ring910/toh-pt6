@@ -29,5 +29,72 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: deploy-web-api
+          name: test
           path: ./test.zip
+          
+  create-release-tag:
+      name: "create release for new tag created"
+      runs-on: ubuntu-latest
+      steps:
+        - name: "create release for new tag created"
+          uses: actions/github-script@v6
+          id: createRelease
+          with:
+            script: |
+              try{
+                const res = await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: 'v1.0.11',
+                name: 'v1.0.11',
+              });
+              }catch(error){
+                core.setFailed(error.message);
+              }
+              
+  upload-artifacts:
+    name: "upload artifacts to release"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "upload artifacts"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.payload.workflow_run.id,
+            });
+            
+            let latestRelease = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+            });
+            
+            console.log(context.payload.workflow_run.id)
+            console.log(github.run_id)
+            
+            for (const artifact of allArtifacts.data.artifacts)
+            {
+              let download = await github.rest.actions.downloadArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: artifact.id,
+                archive_format: 'zip'
+              });
+
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: latestRelease.data.id,
+                name: artifact.name + '.zip',
+                data: download.data,
+                headers:{
+                  'content-type': 'application/zip',
+                },
+                url: latestRelease.data.upload_url
+              });
+              
+              let fs = require('fs');
+              fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/${artifact.name}.zip`, Buffer.from(download.data));
+            }
