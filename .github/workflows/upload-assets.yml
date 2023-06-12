@@ -24,7 +24,7 @@ jobs:
           uses: actions/github-script@v6
           with:
             script: |
-              const newTag = ${{ steps.download.outputs.DownloadPath }}
+              let newTag = ${{ steps.download.outputs }}
               console.log(newTag)
         - name: "upload artifacts"
           uses: actions/github-script@v6
