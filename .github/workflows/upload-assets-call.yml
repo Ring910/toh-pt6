@@ -1,4 +1,4 @@
-name: Upload Artifact Release
+name: Upload Artifact Release Call
 
 on:
   workflow_call:
