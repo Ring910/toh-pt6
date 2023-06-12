@@ -7,10 +7,7 @@ on:
         description: "Tag name of the latest release"
         required: true
         type: string
-  workflow_run:
-    workflows: [Create Release]
-    types: [completed]
-
+ 
 jobs:
   upload-artifacts:
     name: "upload artifacts to release"
@@ -20,25 +17,41 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: github.run_id,
+            });
+            
             let latestRelease = await github.rest.repos.getLatestRelease({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
             });
             
-            console.log(context.payload.workflow_run.id)
             console.log(github.run_id)
+            console.log(allArtifacts)
             
-            let uploadRelease = await github.rest.repos.uploadReleaseAsset({
+            for (const artifact of allArtifacts.data.artifacts)
+            {
+              let download = await github.rest.actions.downloadArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: artifact.id,
+                archive_format: 'zip'
+              });
+
+              await github.rest.repos.uploadReleaseAsset({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
-                name: 'test.zip',
-                data: './test.zip',
+                name: artifact.name + '.zip',
+                data: download.data,
                 headers:{
                   'content-type': 'application/zip',
                 },
                 url: latestRelease.data.upload_url
-            });
-          
-            let fs = require('fs');
-            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/test.zip`, Buffer.from('./test.zip'));
+              });
+              
+              let fs = require('fs');
+              fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/${artifact.name}.zip`, Buffer.from(download.data));
+            }
