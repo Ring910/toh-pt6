@@ -51,18 +51,7 @@ jobs:
               }catch(error){
                 core.setFailed(error.message);
               }
-        - name: get artifacts
-          uses: actions/github-script@v6
-          with:
-            script: |
-              let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: github.run_id,
-              });
-              
-              console.log(allArtifacts)
-              
+       
   upload-assets:
     needs: create-release-tag
     uses: ./.github/workflows/upload-assets.yml
