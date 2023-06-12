@@ -21,7 +21,7 @@ jobs:
             path: ./test
         - name: check output
           run: |
-            echo "steps.download.outputs"
+            echo "steps.download.outputs.DownloadPath" >> $GITHUB_OUTPUT
         - name: "upload artifacts"
           uses: actions/github-script@v6
           with:
