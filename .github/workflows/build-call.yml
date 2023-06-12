@@ -1,0 +1,53 @@
+name: build-call
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run build
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: test
+          path: ./test
+          
+  create-release-tag:
+      name: "create release for new tag created"
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: "create release for new tag created"
+          uses: actions/github-script@v6
+          id: createRelease
+          with:
+            script: |
+              try{
+                const res = await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: 'v1.0.11',
+                name: 'v1.0.11',
+              });
+              }catch(error){
+                core.setFailed(error.message);
+              }
+       
+  upload-assets:
+    needs: create-release-tag
+    uses: ./.github/workflows/upload-assets.yml
+    with:
+      latest-release-tag: 'v1.0.11'
