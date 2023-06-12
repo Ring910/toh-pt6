@@ -21,6 +21,9 @@ jobs:
 
         - name: 'Echo download path'
           run: echo ${{steps.download.outputs.download-path}}
+        
+        - name: 'Zip folder'
+          run: Compress-Archive -Path ./test -Destination test.zip
           
         - name: "upload artifacts"
           uses: actions/github-script@v6
@@ -33,13 +36,14 @@ jobs:
             
               let fs = require('fs');
               fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/test.zip`, Buffer.from('./test'));
+              console.log(fs);
               
               await github.rest.repos.uploadReleaseAsset({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
                 name: 'test.zip',
-                file: fs.readFileSync('${{steps.download.outputs.download-path}}'),
+                file: fs.readFileSync('./test/test.zip'),
                 headers:{
                   'content-type': 'application/zip',
                 },
