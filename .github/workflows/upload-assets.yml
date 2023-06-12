@@ -19,12 +19,13 @@ jobs:
           with:
             name: test
             path: ./test
+        - name: check output
+          run: |
+            console.log(steps.download.outputs)
         - name: "upload artifacts"
           uses: actions/github-script@v6
           with:
             script: |
-              console.log(steps.download.outputs)
-              
               let latestRelease = await github.rest.repos.getLatestRelease({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -35,7 +36,7 @@ jobs:
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
                 name: 'test.zip',
-                data: './test',
+                data: ./test.zip,
                 headers:{
                   'content-type': 'application/zip',
                 },
