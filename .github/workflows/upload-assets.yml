@@ -21,7 +21,7 @@ jobs:
             path: ./test
         - name: check output
           run: |
-            console.log(steps.download.outputs)
+            echo steps.download.outputs
         - name: "upload artifacts"
           uses: actions/github-script@v6
           with:
