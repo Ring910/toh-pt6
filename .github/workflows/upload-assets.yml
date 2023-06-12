@@ -1,13 +1,16 @@
 name: Upload Artifact Release
 
 on:
-  workflow_call:
-    inputs:
-      latest-release-tag:
-        description: "Tag name of the latest release"
-        required: true
-        type: string
- 
+#   workflow_call:
+#     inputs:
+#       latest-release-tag:
+#         description: "Tag name of the latest release"
+#         required: true
+#         type: string
+  workflow_run:
+    workflows: [build]
+    types: [completed]
+    
 jobs:
   upload-artifacts:
     name: "upload artifacts to release"
