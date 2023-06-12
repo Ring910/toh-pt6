@@ -52,8 +52,8 @@ jobs:
                 core.setFailed(error.message);
               }
        
-  upload-assets:
-    needs: create-release-tag
-    uses: ./.github/workflows/upload-assets.yml
-    with:
-      latest-release-tag: 'v1.0.11'
+#   upload-assets:
+#     needs: create-release-tag
+#     uses: ./.github/workflows/upload-assets.yml
+#     with:
+#       latest-release-tag: 'v1.0.11'
