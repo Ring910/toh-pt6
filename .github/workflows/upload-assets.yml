@@ -23,7 +23,7 @@ jobs:
           uses: actions/github-script@v6
           with:
             script: |
-              console.log(download.outputs)
+              console.log(steps.download.outputs)
               
               let latestRelease = await github.rest.repos.getLatestRelease({
                   owner: context.repo.owner,
