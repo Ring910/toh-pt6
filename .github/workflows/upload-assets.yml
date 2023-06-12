@@ -19,9 +19,13 @@ jobs:
           with:
             name: test
             path: ./test
-        - name: check output
-          run: |
-            echo "steps.download.outputs.DownloadPath" >> $GITHUB_OUTPUT
+        - name: "Output New Tag"
+          id: bumped-new-tag
+          uses: actions/github-script@v6
+          with:
+            script: |
+              const newTag = ${{steps.download.outputs.DownloadPath}};
+              console.log(newTag)
         - name: "upload artifacts"
           uses: actions/github-script@v6
           with:
