@@ -40,7 +40,7 @@ jobs:
               });
               
               let fs = require('fs');
-              fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/test.zip`, Buffer.from(download.data));
+              fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/test.zip`, Buffer.from('./test'));
               
 #       - name: "upload artifacts"
 #         uses: actions/github-script@v6
