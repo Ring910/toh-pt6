@@ -39,7 +39,7 @@ jobs:
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
                 name: 'test.zip',
-                file: fs.readFileSync('./test/test.zip'),
+                file: fs.readFileSync('${{steps.download.outputs.download-path}}'),
                 headers:{
                   'content-type': 'application/zip',
                 },
