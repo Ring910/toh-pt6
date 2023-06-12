@@ -16,12 +16,12 @@ jobs:
     name: "upload artifacts to release"
     runs-on: ubuntu-latest
     steps:
-        - name: Download Artifacts
-          uses: actions/download-artifact@v3
-          id: download
-          with:
-            name: test
-            path: ./test
+#         - name: Download Artifacts
+#           uses: actions/download-artifact@v3
+#           id: download
+#           with:
+#             name: test
+#             path: ./test
         - name: "upload artifacts"
           uses: actions/github-script@v6
           with:
