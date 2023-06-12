@@ -26,6 +26,7 @@ jobs:
             });
             
             console.log(context.payload.workflow_run.id)
+            console.log(github.run_id)
             
             let uploadRelease = await github.rest.repos.uploadReleaseAsset({
                 owner: context.repo.owner,
