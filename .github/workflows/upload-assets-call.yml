@@ -24,7 +24,7 @@ jobs:
         
         - name: 'Zip folder'
           shell: pwsh
-          run: Compress-Archive -Path ./test -Destination test.zip
+          run: zip -r test.zip . -x "./test"
           
         - name: "upload artifacts"
           uses: actions/github-script@v6
