@@ -53,49 +53,8 @@ jobs:
                 core.setFailed(error.message);
               }
               
-  upload-artifacts:
-    name: "upload artifacts to release"
-    runs-on: ubuntu-latest
+  upload-assets:
     needs: create-release-tag
-    steps:
-      - name: "upload artifacts"
-        uses: actions/github-script@v6
-        with:
-          script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: github.run_id,
-            });
-            
-            let latestRelease = await github.rest.repos.getLatestRelease({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-            });
-            
-            console.log(github.run_id)
-            
-            for (const artifact of allArtifacts.data.artifacts)
-            {
-              let download = await github.rest.actions.downloadArtifact({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                artifact_id: artifact.id,
-                archive_format: 'zip'
-              });
-
-              await github.rest.repos.uploadReleaseAsset({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                release_id: latestRelease.data.id,
-                name: artifact.name + '.zip',
-                data: download.data,
-                headers:{
-                  'content-type': 'application/zip',
-                },
-                url: latestRelease.data.upload_url
-              });
-              
-              let fs = require('fs');
-              fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/${artifact.name}.zip`, Buffer.from(download.data));
-            }
+    uses: ./.github/workflows/upload-assets.yml
+    with:
+      latest-release-tag: 'v1.0.11'
