@@ -58,8 +58,7 @@ jobs:
                repo: context.repo.repo,
                run_id: runId
               });
-              
-              console.log(context.payload.workflow_run.id)
+
               console.log(allArtifacts)
        
   upload-assets:
