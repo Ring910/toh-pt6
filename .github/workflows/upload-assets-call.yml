@@ -23,6 +23,7 @@ jobs:
           run: echo ${{steps.download.outputs.download-path}}
         
         - name: 'Zip folder'
+          shell: pwsh
           run: Compress-Archive -Path ./test -Destination test.zip
           
         - name: "upload artifacts"
