@@ -31,8 +31,8 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
-                name: test + '.zip',
-                data: 'test.zip',
+                name: 'test.zip',
+                data: './test',
                 headers:{
                   'content-type': 'application/zip',
                 },
