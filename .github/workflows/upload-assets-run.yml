@@ -30,18 +30,31 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
               });
-            
-              await github.rest.repos.uploadReleaseAsset({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                release_id: latestRelease.data.id,
-                name: 'test.zip',
-                data: './test.zip',
-                headers:{
-                  'content-type': 'application/zip',
-                },
-                url: latestRelease.data.upload_url
-              });
               
-              let fs = require('fs');
-              fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/test.zip`, Buffer.from('./test'));
+               for (const artifact of allArtifacts.data.artifacts)
+               {
+                      let download = await github.rest.actions.downloadArtifact({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        artifact_id: artifact.id,
+                        archive_format: 'zip'
+                      });
+                      
+                      console.log(download.data)
+                      
+                      await github.rest.repos.uploadReleaseAsset({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        release_id: latestRelease.data.id,
+                        name: artifact.name + '.zip',
+                        data: download.data,
+                        headers:{
+                          'content-type': 'application/zip',
+                        },
+                        origin: latestRelease.data.url
+                      });
+
+                      let fs = require('fs');
+                      fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/${artifact.name}.zip`, Buffer.from(download.data));
+                }            
+              
