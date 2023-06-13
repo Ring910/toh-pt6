@@ -34,12 +34,15 @@ jobs:
               });
               let fs = require('fs');
               
+              const messageBytes = Buffer.from(./test.zip);
+              console.log(messageBytes)
+              
               await github.rest.repos.uploadReleaseAsset({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   release_id: latestRelease.data.id,
                   name: 'test.zip',
-                  data: test.zip,
+                  data: 'test.zip',
                   headers:{
                     'content-type': 'application/zip',
                   },
