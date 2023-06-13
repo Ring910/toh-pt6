@@ -42,6 +42,8 @@ jobs:
               });
               
               let path = ${{ inputs.artifact-name }} + '.zip'
+              console.log(path)
+              
               let fs = require('fs');
               
               const uploadAssetResponse = await github.rest.repos.uploadReleaseAsset({
