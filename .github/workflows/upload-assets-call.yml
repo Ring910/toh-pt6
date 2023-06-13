@@ -35,7 +35,7 @@ jobs:
                 run_id: runId
               });
               
-              console.log(getWorkflowrun.data)
+              console.log(getWorkflowrun)
               
               let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
