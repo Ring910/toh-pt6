@@ -35,8 +35,16 @@ jobs:
                 run_id: runId,
               });
               
-              console.log(getWorkflowrun)
+              console.log(getWorkflowrun.data)
               
+              let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: runId,
+              });
+
+              console.log(allArtifacts)
+
               let latestRelease = await github.rest.repos.getLatestRelease({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -49,7 +57,7 @@ jobs:
                 repo: context.repo.repo,
                 release_id: latestRelease.data.id,
                 name: 'test.zip',
-                file: fs.readFileSync('./test.zip'),
+                data: 'test'
                 headers:{
                   'content-type': 'application/zip',
                 },
