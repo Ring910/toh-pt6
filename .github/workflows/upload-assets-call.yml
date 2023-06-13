@@ -11,8 +11,16 @@ on:
         description: "Path of the artifact"
         required: true
         type: string
-      latest-release-tag:
-        description: "Tag name of the latest release"
+#       latest-release-tag:
+#         description: "Tag name of the latest release"
+#         required: true
+#         type: string
+      package-json-path:
+        description: "Path of the package.json"
+        required: true
+        type: string
+      tag-prefix:
+        description: "Prefix of the release tag"
         required: true
         type: string
     
@@ -35,10 +43,13 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             script: |
+              const pj = require('${{ inputs.package-json-path }}')
+              console.log(pj.version)
+              
               let getRelease = await github.rest.repos.getReleaseByTag({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  tag: '${{ inputs.latest-release-tag }}'
+                  tag: '${{ inputs.tag-prefix }}' + pj.version
               });
               
               let path = './${{ inputs.artifact-name }}.zip'
