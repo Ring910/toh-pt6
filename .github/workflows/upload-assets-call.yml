@@ -41,7 +41,7 @@ jobs:
                   tag: '${{ inputs.latest-release-tag }}'
               });
               
-              let path = './' + '${{ inputs.artifact-name }}' + '.zip'
+              let path = './${{ inputs.artifact-name }}.zip'
               
               console.log(path)
               
