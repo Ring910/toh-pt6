@@ -42,11 +42,22 @@ jobs:
                repo: context.repo.repo,
                run_id: runId
               });
-
-              console.log(allArtifacts)
               
               let getArtifactUrl = getWorkflowrun.data.artifacts_url
-
+              
+              console.log(getArtifactUrl)
+              
+              let getArt = await github.request('GET getArtifactUrl', {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: runId,
+                headers: {
+                  'X-GitHub-Api-Version': '2022-11-28'
+                }
+              });
+              
+              console.log(getArt)
+              
               let latestRelease = await github.rest.repos.getLatestRelease({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
