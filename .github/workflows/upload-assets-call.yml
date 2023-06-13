@@ -34,7 +34,7 @@ jobs:
               });
               let fs = require('fs');
               
-              const messageBytes = Buffer.from(./test.zip);
+              const messageBytes = Buffer.from('./test.zip');
               console.log(messageBytes)
               
               await github.rest.repos.uploadReleaseAsset({
