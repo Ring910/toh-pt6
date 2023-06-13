@@ -43,31 +43,10 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             script: |
-              const pj = require('${{ inputs.package-json-path }}')
+              const pj = require('./package.json')
               console.log(pj.version)
               
-              let getRelease = await github.rest.repos.getReleaseByTag({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  tag: '${{ inputs.tag-prefix }}' + pj.version
-              });
               
-              let path = './${{ inputs.artifact-name }}.zip'
-              
-              console.log(path)
-              
-              let fs = require('fs');
-              
-              const uploadAssetResponse = await github.rest.repos.uploadReleaseAsset({
-                  name: '${{ inputs.artifact-name }}.zip',
-                  data: fs.readFileSync('./${{ inputs.artifact-name }}.zip'),
-                  headers: {
-                    'content-type': 'application/zip',
-                  },
-                  url: getRelease.data.upload_url
-              });
-              
-              console.log(uploadAssetResponse);       
                  
           
 #         - name: "upload artifacts"
