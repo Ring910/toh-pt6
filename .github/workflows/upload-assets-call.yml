@@ -43,7 +43,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             script: |
-              const pj = require('./package.json')
+              const pj = require('package.json');
               console.log(pj.version)
               
               
