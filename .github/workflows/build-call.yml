@@ -31,21 +31,21 @@ jobs:
       needs: build
       runs-on: ubuntu-latest
       steps:
-#         - name: "create release for new tag created"
-#           uses: actions/github-script@v6
-#           id: createRelease
-#           with:
-#             script: |
-#               try{
-#                 const res = await github.rest.repos.createRelease({
-#                 owner: context.repo.owner,
-#                 repo: context.repo.repo,
-#                 tag_name: 'v1.0.11',
-#                 name: 'v1.0.11',
-#               });
-#               }catch(error){
-#                 core.setFailed(error.message);
-#               }
+        - name: "create release for new tag created"
+          uses: actions/github-script@v6
+          id: createRelease
+          with:
+            script: |
+              try{
+                const res = await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: 'v1.0.11',
+                name: 'v1.0.11',
+              });
+              }catch(error){
+                core.setFailed(error.message);
+              }
         - name: get artifact
           uses: actions/github-script@v6
           with:
