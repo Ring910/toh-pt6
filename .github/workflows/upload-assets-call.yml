@@ -38,7 +38,7 @@ jobs:
               let getRelease = await github.rest.repos.getReleaseByTag({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  tag: ${{ inputs.latest-release-tag }}
+                  tag: '${{ inputs.latest-release-tag }}'
               });
               
               console.log(getRelease)
