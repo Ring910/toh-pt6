@@ -23,7 +23,20 @@ jobs:
         
         - name: zip folder
           run: zip test.zip ./test -r
-          
+
+        - name: "output release"
+          uses: actions/github-script@v6
+          id: outputRelease
+          with:
+            script: |
+              let latestRelease = await github.rest.repos.getLatestRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+              }); 
+              
+              core.setOutput('releaseURL', latestRelease.data.upload_url)
+              console.log(latestRelease)
+
         - name: Test own action
           uses: Ring910/upload-release-asset@v1.0.0
           env:
