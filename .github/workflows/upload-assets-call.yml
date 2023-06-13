@@ -44,6 +44,8 @@ jobs:
               });
 
               console.log(allArtifacts)
+              
+              let getArtifactUrl = getWorkflowrun.data.artifacts_url
 
               let latestRelease = await github.rest.repos.getLatestRelease({
                   owner: context.repo.owner,
