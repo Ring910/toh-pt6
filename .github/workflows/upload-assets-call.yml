@@ -41,7 +41,22 @@ jobs:
                   tag: '${{ inputs.latest-release-tag }}'
               });
               
-              console.log(getRelease)
+              let path = ${{ inputs.artifact-name }} + '.zip'
+              
+              console.log(path)
+              
+              let fs = require('fs');
+              
+              const uploadAssetResponse = await github.rest.repos.uploadReleaseAsset({
+                  name: ${{ inputs.artifact-name }} + '.zip',
+                  data: fs.readFileSync(path),
+                  headers: {
+                    'content-type': 'application/zip',
+                  },
+                  url: getRelease.data.upload_url
+              });
+              
+              console.log(uploadAssetResponse);       
                  
           
 #         - name: "upload artifacts"
