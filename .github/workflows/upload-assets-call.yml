@@ -23,7 +23,17 @@ jobs:
         
         - name: zip folder
           run: zip test.zip ./test -r
-
+          
+        - name: Test own action
+          uses: Ring910/upload-release-asset@v1.0.0
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.outputRelease.outputs.releaseURL }} 
+            asset_path: ./test.zip
+            asset_name: test.zip
+            asset_content_type: application/zip          
+          
         - name: "upload artifacts"
           uses: actions/github-script@v6
           with:
