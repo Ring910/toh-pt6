@@ -33,12 +33,15 @@ jobs:
               }); 
               
               core.setOutput('releaseURL', latestRelease.data.upload_url)
-            
+       
+        - name: zip folder
+          run: zip test.zip ./test -r
+          
         - name: upload artifact
           uses: actions/upload-release-asset@v1
           with:
             upload_url: ${{ steps.outputRelease.outputs.releaseURL }}
-            asset_path: ${{steps.download.outputs.download-path}}
+            asset_path: test.zip
             asset_name: test.zip
             asset_content_type: application/zip
             
