@@ -21,6 +21,29 @@ jobs:
         - name: 'Echo download path'
           run: echo ${{steps.download.outputs.download-path}}
         
+        - name: zip folder
+          run: zip test.zip ./test -r
+
+        - name: "upload artifacts"
+          uses: actions/github-script@v6
+          with:
+            script: |
+              let latestRelease = await github.rest.repos.getLatestRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+              });
+
+              await github.rest.repos.uploadReleaseAsset({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  release_id: latestRelease.data.id,
+                  name: 'test.zip',
+                  data: ./test.zip,
+                  headers:{
+                    'content-type': 'application/zip',
+                  },
+                  url: latestRelease.data.upload_url
+              });
 #         - name: Create Release
 #           id: create_release
 #           uses: actions/create-release@v1
@@ -32,31 +55,31 @@ jobs:
 #             draft: false
 #             prerelease: false
             
-        - name: "output release"
-          uses: actions/github-script@v6
-          id: outputRelease
-          with:
-            script: |
-              let latestRelease = await github.rest.repos.getLatestRelease({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-              }); 
+#         - name: "output release"
+#           uses: actions/github-script@v6
+#           id: outputRelease
+#           with:
+#             script: |
+#               let latestRelease = await github.rest.repos.getLatestRelease({
+#                   owner: context.repo.owner,
+#                   repo: context.repo.repo,
+#               }); 
               
-              core.setOutput('releaseURL', latestRelease.data.upload_url)
-              console.log(latestRelease)
+#               core.setOutput('releaseURL', latestRelease.data.upload_url)
+#               console.log(latestRelease)
               
-        - name: zip folder
-          run: zip test.zip ./test -r
+#         - name: zip folder
+#           run: zip test.zip ./test -r
           
-        - name: upload artifact
-          uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ steps.outputRelease.outputs.releaseURL }} 
-            asset_path: ./test.zip
-            asset_name: test.zip
-            asset_content_type: application/zip
+#         - name: upload artifact
+#           uses: actions/upload-release-asset@v1
+#           env:
+#             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           with:
+#             upload_url: ${{ steps.outputRelease.outputs.releaseURL }} 
+#             asset_path: ./test.zip
+#             asset_name: test.zip
+#             asset_content_type: application/zip
             
 #         - name: "upload artifacts"
 #           uses: actions/github-script@v6
