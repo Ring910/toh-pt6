@@ -21,15 +21,22 @@ jobs:
 
         - name: 'Echo download path'
           run: echo ${{steps.download.outputs.download-path}}
-        
-        - name: 'Zip folder'
-          shell: pwsh
-          run: zip -r test.zip . -x "./test"
           
         - name: "upload artifacts"
           uses: actions/github-script@v6
           with:
             script: |
+              let runId = ${{ github.run_id }}
+              console.log(runId)
+              
+              let getWorkflowrun = await github.rest.actions.getWorkflowRun({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: runId,
+              });
+              
+              console.log(getWorkflowrun)
+              
               let latestRelease = await github.rest.repos.getLatestRelease({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
