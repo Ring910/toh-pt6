@@ -49,13 +49,11 @@ jobs:
               let getRelease;
 
               if(packageJsonPath != "" && tagPrefix != ""){
-                const pj = require(packageJsonPath)
-                console.log(pj.version)
-
+               
                 getRelease = await github.rest.repos.getReleaseByTag({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  tag: tagPrefix + pj.version
+                  tag: 'v1.0.11'
                 });
               }
 
