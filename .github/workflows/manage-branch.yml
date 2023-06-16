@@ -21,6 +21,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           regex: '^(feature|bugfix|hotfix)\/.*'
+        # regex: '^demo/(feature|bugfix|hotfix)/.*'
         # flags: i
         # token: ${{ secrets.REPO_TOKEN }}
         # delete: true
