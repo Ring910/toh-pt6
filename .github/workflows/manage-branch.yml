@@ -4,6 +4,9 @@ on:
   delete:
   create:
   pull_request:
+    branches:
+      - main
+      - feature/testMangeBranch
 
 jobs:
   branch-naming-policy:
