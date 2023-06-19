@@ -1,0 +1,25 @@
+name: Branch Naming Policy Action
+
+on:
+  delete:
+  create:
+  pull_request:
+
+jobs:
+  branch-naming-policy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Branch Naming Policy Action
+        uses: Ring910/branch-naming@v1
+        if: github.ref_type == 'branch' || github.ref_type == 'pull_request'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          regex: '^(feature|bugfix|hotfix)\/.*'
+        # regex: '^demo/(feature|bugfix|hotfix)/.*'
+        # flags: i
+        # token: ${{ secrets.REPO_TOKEN }}
+        # delete: true
