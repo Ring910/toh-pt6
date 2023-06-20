@@ -1,0 +1,15 @@
+name: Branch Naming Policy Action
+
+on:
+  create:
+  delete:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  branch-naming-policy:
+    uses: ./.github/workflows/manage-branch.yml
+    with:
+      app-name: demosite
+    secrets: inherit
