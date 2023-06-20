@@ -22,6 +22,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
+          app-name: ${{ inputs.app-name }}
         # regex: '^demo/(feature|bugfix|hotfix)/.*'
         # flags: i
         # token: ${{ secrets.REPO_TOKEN }}
