@@ -1,13 +1,13 @@
 name: Branch Naming Policy Action
 
 on:
-  delete:
-  create:
-  pull_request:
-    branches:
-      - main
-      - feature/testMangeBranch
-
+  workflow_call:
+    inputs:
+      app-name:
+        description: 'Name of  the application'
+        required: true
+        type: string
+     
 jobs:
   branch-naming-policy:
     runs-on: ubuntu-latest
@@ -21,7 +21,7 @@ jobs:
         if: github.ref_type == 'branch' || github.ref_type == 'pull_request'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          regex: '^(feature|bugfix|hotfix)\/.*'
+          regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
         # regex: '^demo/(feature|bugfix|hotfix)/.*'
         # flags: i
         # token: ${{ secrets.REPO_TOKEN }}
