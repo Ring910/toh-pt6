@@ -20,7 +20,7 @@ jobs:
         uses: Ring910/branch-naming@v1
         if: github.ref_type == 'branch' || github.ref_type == 'pull_request'
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_TOKEN }}
           regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
           app-name: ${{ inputs.app-name }}
           delete: true
