@@ -1,6 +1,7 @@
 name: Branch Naming Policy Action
 
 on:
+  push:
   create:
   delete:
   pull_request:
