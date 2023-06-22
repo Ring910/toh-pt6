@@ -23,4 +23,3 @@ jobs:
           token: ${{ secrets.REPO_TOKEN }}
           regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
           app-name: ${{ inputs.app-name }}
-          delete: true
