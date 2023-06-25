@@ -8,14 +8,8 @@ on:
       - main
 
 jobs:
-  check-owner:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch Source
-        uses: actions/checkout@v3
-          
   branch-naming-policy:
     uses: ./.github/workflows/manage-branch.yml
     with:
-      app-name: abcd
+      app-name: plt-dashboard
     secrets: inherit
