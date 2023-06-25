@@ -21,13 +21,16 @@ jobs:
             // Get owners from CODEOWNERS
             const fs = require('fs');
             const path = './.github/CODEOWNERS';
-            var owners = [];
+            var owners = {};
             await fs.readFileSync(path).toString().split("\n")
               .forEach((el) => {
                 if (!el.startsWith("#") && el.trim() != "") {
                   let result = el.trim().split(/\s+/);
                   console.log(result)
-                  console.log(result.slice(0, result.indexof(',')));
+                  var unique_names = [ ...new Set(result.map(name => {
+                     return name.split('_')[0]
+                  }))]
+                  console.log(unique_names)
                   owners[result[0]] = result.splice(1, result.length).join();
                 }
               });
