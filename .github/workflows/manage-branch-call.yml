@@ -16,6 +16,7 @@ jobs:
       - name: Check Code Owner
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.REPO_TOKEN }}
           script: |
             // Get owners from CODEOWNERS
             const fs = require('fs');
