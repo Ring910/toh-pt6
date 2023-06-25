@@ -9,7 +9,7 @@ on:
 
 jobs:
   check-owner:
-    runs-on: [Windows]
+    runs-on: ubuntu-latest
     steps:
       - name: Fetch Source
         uses: actions/checkout@v3
