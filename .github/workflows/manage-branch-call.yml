@@ -8,6 +8,29 @@ on:
       - main
 
 jobs:
+  check-owner:
+    runs-on: [self-hosted, Windows, build]
+    steps:
+      - name: Fetch Source
+        uses: actions/checkout@v3
+      - name: Check Code Owner
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // Get owners from CODEOWNERS
+            const fs = require('fs');
+            const path = './.github/CODEOWNERS';
+            var owners = {};
+            let codeOwner = await fs.readFileSync(path).toString().split("\n")
+              .forEach((el) => {
+                if (!el.startsWith("#") && el.trim() != "") {
+                  let result = el.trim().split(/\s+/);
+                  owners[result[0]] = result.splice(1, result.length).join();
+                }
+              });
+              
+            console.log(codeOwner)
+    
   branch-naming-policy:
     uses: ./.github/workflows/manage-branch.yml
     with:
