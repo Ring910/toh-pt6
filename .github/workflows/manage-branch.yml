@@ -33,7 +33,7 @@ jobs:
                 }
               });
             
-            var checkExist = Object.keys(owners).some(name == '${{inputs.app-name}}');
+            var checkExist = Object.keys(owners).some((name) => name == '${{inputs.app-name}}');
             console.log(checkExist)
             for(const key of Object.keys(owners)){
               
