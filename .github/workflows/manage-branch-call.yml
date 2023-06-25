@@ -9,7 +9,7 @@ on:
 
 jobs:
   check-owner:
-    runs-on: [self-hosted, Windows, build]
+    runs-on: [Windows]
     steps:
       - name: Fetch Source
         uses: actions/checkout@v3
