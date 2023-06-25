@@ -28,7 +28,7 @@ jobs:
                   let result = el.trim().split(/\s+/);
                   console.log(result)
                   var unique_names = [ ...new Set(result.map(name => {
-                     return name.split('_')[0]
+                     return name.split(',')[0]
                   }))]
                   console.log(unique_names)
                   owners[result[0]] = result.splice(1, result.length).join();
