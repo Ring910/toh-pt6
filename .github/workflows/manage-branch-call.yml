@@ -31,7 +31,11 @@ jobs:
               });
               
             console.log(owners)
-    
+            
+            for(const key of Object.keys(owners)){
+              console.log(key)
+            }
+            
   branch-naming-policy:
     uses: ./.github/workflows/manage-branch.yml
     with:
