@@ -24,7 +24,7 @@ jobs:
             var owners = {};
             await fs.readFileSync(path).toString().split("\n")
               .forEach((el) => {
-                if (!el.startsWith("@") && el.trim() != "") {
+                if (!el.startsWith("#") && el.trim() != "") {
                   let result = el.trim().split(/\s+/);
                   owners[result[0]] = result.splice(1, result.length).join();
                 }
