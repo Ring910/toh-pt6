@@ -22,15 +22,15 @@ jobs:
             const fs = require('fs');
             const path = './.github/CODEOWNERS';
             var owners = {};
-            let codeOwner = await fs.readFileSync(path).toString().split("\n")
-                              .forEach((el) => {
-                                if (!el.startsWith("#") && el.trim() != "") {
-                                  let result = el.trim().split(/\s+/);
-                                  owners[result[0]] = result.splice(1, result.length).join();
-                                }
-                              });
+            await fs.readFileSync(path).toString().split("\n")
+              .forEach((el) => {
+                if (!el.startsWith("#") && el.trim() != "") {
+                  let result = el.trim().split(/\s+/);
+                  owners[result[0]] = result.splice(1, result.length).join();
+                }
+              });
               
-            console.log(codeOwner)
+            console.log(owners)
     
   branch-naming-policy:
     uses: ./.github/workflows/manage-branch.yml
