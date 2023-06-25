@@ -13,29 +13,7 @@ jobs:
     steps:
       - name: Fetch Source
         uses: actions/checkout@v3
-      - name: Check Code Owner
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.REPO_TOKEN }}
-          script: |
-            // Get owners from CODEOWNERS
-            const fs = require('fs');
-            const path = './.github/CODEOWNERS';
-            var owners = {};
-            await fs.readFileSync(path).toString().split("\n")
-              .forEach((el) => {
-                if (!el.startsWith("#") && el.trim() != "") {
-                  let result = el.trim().split(/\s+/);
-                  owners[result[0]] = result.splice(1, result.length).join();
-                }
-              });
-              
-            console.log(owners)
-            
-            for(const key of Object.keys(owners)){
-              console.log(key)
-            }
-            
+          
   branch-naming-policy:
     uses: ./.github/workflows/manage-branch.yml
     with:
