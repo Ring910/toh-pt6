@@ -11,5 +11,5 @@ jobs:
   branch-naming-policy:
     uses: ./.github/workflows/manage-branch.yml
     with:
-      app-name: plt-dashboard
+      app-name: plt-web
     secrets: inherit
