@@ -34,17 +34,14 @@ jobs:
               });
             
             var checkExist = Object.keys(owners).some((name) => name == '${{inputs.app-name}}');
-            console.log(checkExist)
-            for(const key of Object.keys(owners)){
-              
-              if('${{inputs.app-name}}' == key){
-                console.log(key)
-              }
+            
+            if(!checkExist){
+              core.setFailed("app name is N/A")
             }
       
       - name: Run Branch Naming Policy Action
         uses: Ring910/branch-naming@v1
-        if: github.ref_type == 'branch' || github.ref_type == 'pull_request'
+        if: (github.ref_type == 'branch' || github.ref_type == 'pull_request') && success()
         with:
           token: ${{ secrets.REPO_TOKEN }}
           regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
