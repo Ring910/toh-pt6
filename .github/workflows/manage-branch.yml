@@ -51,7 +51,7 @@ jobs:
         with:
           script: |
             var getWording='${{inputs.wording}}'
-            var replaceComma=myStr.replaceAll(",", "|");
+            var replaceComma=getWording.replaceAll(",", "|");
             
             core.setOutput('wording_output', replaceComma);
       
