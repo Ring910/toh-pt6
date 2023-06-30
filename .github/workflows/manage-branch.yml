@@ -7,11 +7,17 @@ on:
         description: 'Name of  the application'
         required: true
         type: string
+      wording:
+        description: 'Name of  the application'
+        required: true
+        type: string
      
 jobs:
   branch-naming-policy:
     runs-on: ubuntu-latest
-
+    outputs:
+      wording_output: ${{ steps.wordingOutput.outputs.wording_output }}
+      
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -39,10 +45,20 @@ jobs:
               core.setFailed("app name is N/A")
             }
       
+      - name: Set Output
+        uses: actions/github-script@v6
+        id: wordingOutput
+        with:
+          script: |
+            var getWording='${{inputs.wording}}'
+            var replaceComma=myStr.replaceAll(",", "|");
+            
+            core.setOutput('wording_output', replaceComma);
+      
       - name: Run Branch Naming Policy Action
         uses: Ring910/branch-naming@v1
         if: (github.ref_type == 'branch' || github.ref_type == 'pull_request') && success()
         with:
           token: ${{ secrets.REPO_TOKEN }}
-          regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
+          regex: '^${{inputs.app-name}}/(${{steps.wordingOutput.wording_output}})\/.*'
           app-name: ${{ inputs.app-name }}
