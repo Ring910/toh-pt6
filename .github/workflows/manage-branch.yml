@@ -42,9 +42,7 @@ jobs:
             console.log(owners)
             var checkExist = Object.keys(owners).some((name) => name == '${{inputs.app-name}}');
             
-            if(!checkExist){
-              core.setFailed("app name is N/A")
-            }
+            
             core.setOutput('applist_output', Object.keys(owners).toString());
       
       - name: Set Output
