@@ -11,6 +11,6 @@ jobs:
   branch-naming-policy:
     uses: ./.github/workflows/manage-branch.yml
     with:
-      app-name: demosite
+      app-name: abcd
       wording: feature,bugfix,bug,hotfix,enhancement
     secrets: inherit
