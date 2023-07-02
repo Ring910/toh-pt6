@@ -38,7 +38,7 @@ jobs:
                   owners[result[0]] = result.splice(1, result.length).join();
                 }
               });
-            
+            console.log(owners)
             var checkExist = Object.keys(owners).some((name) => name == '${{inputs.app-name}}');
             
             if(!checkExist){
