@@ -24,6 +24,7 @@ jobs:
       
       - name: Check Code Owner
         uses: actions/github-script@v6
+        id: applist
         with:
           github-token: ${{ secrets.REPO_TOKEN }}
           script: |
@@ -44,6 +45,7 @@ jobs:
             if(!checkExist){
               core.setFailed("app name is N/A")
             }
+            core.setOutput('applist_output', Object.keys(owners).toString());
       
       - name: Set Output
         uses: actions/github-script@v6
@@ -61,4 +63,4 @@ jobs:
         with:
           token: ${{ secrets.REPO_TOKEN }}
           regex: '^${{inputs.app-name}}/(${{steps.wordingOutput.outputs.wording_output}})\/.*'
-          app-name: ${{ inputs.app-name }}
+          app-name: ${{ steps.applist.outputs.applist_output }}
