@@ -1,65 +1,65 @@
-name: Branch Naming Policy Action
+name: Branch Naming Policy
 
 on:
   workflow_call:
     inputs:
       app-name:
-        description: 'Name of  the application'
+        description: "Name of the application"
         required: true
         type: string
-      wording:
-        description: 'Name of  the application'
-        required: true
-        type: string
-     
+
 jobs:
   branch-naming-policy:
-    runs-on: ubuntu-latest
-    outputs:
-      wording_output: ${{ steps.wordingOutput.outputs.wording_output }}
-      
+    runs-on: [self-hosted, Windows, build]
+
     steps:
-      - name: Checkout
+      - name: Fetch Source
         uses: actions/checkout@v3
-      
-      - name: Check Code Owner
+
+      - name: Check App Name
         uses: actions/github-script@v6
-        id: applist
         with:
           github-token: ${{ secrets.REPO_TOKEN }}
           script: |
-            // Get owners from CODEOWNERS
             const fs = require('fs');
-            const path = './.github/CODEOWNERS';
-            var owners = {};
+            const path = './.github/APPOWNERS';
+            var app_owners = {};
             await fs.readFileSync(path).toString().split("\n")
               .forEach((el) => {
                 if (!el.startsWith("#") && el.trim() != "") {
                   let result = el.trim().split(/\s+/);
-                  owners[result[0]] = result.splice(1, result.length).join();
+                  app_owners[result[0]] = result.splice(1, result.length).join();
                 }
               });
-            console.log(owners)
-            var checkExist = Object.keys(owners).some((name) => name == '${{inputs.app-name}}');
-            
-            
-            core.setOutput('applist_output', Object.keys(owners).toString());
-      
-      - name: Set Output
-        uses: actions/github-script@v6
-        id: wordingOutput
-        with:
-          script: |
-            var getWording='${{inputs.wording}}'
-            var replaceComma=getWording.replaceAll(",", "|");
-            
-            core.setOutput('wording_output', replaceComma);
-      
+
+            var checkExist = Object.keys(app_owners).some((name) => name == '${{inputs.app-name}}');
+
+            if(!checkExist){
+              core.setFailed("The application name is not exist.")
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: [ 'Invalid App Name' ]
+              })
+            }
+
       - name: Run Branch Naming Policy Action
-        uses: Ring910/branch-naming@v1
+        uses: intel-manufacturing/frameworks.actions.manufacturing.branch-naming-policy@v1.0.0
         if: (github.ref_type == 'branch' || github.ref_type == 'pull_request') && success()
         with:
-          token: ${{ secrets.REPO_TOKEN }}
-          regex: '^${{inputs.app-name}}/(${{steps.wordingOutput.outputs.wording_output}})\/.*'
-          app-name: ${{inputs.app-name}}
-          app-name-list: ${{ steps.applist.outputs.applist_output }}
+          regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
+          app-name: ${{ inputs.app-name }}
+
+      - name: Remove Invalid App Name Label
+        uses: actions/github-script@v6
+        if: contains(github.event.pull_request.labels.*.name, 'Invalid App Name') && success()
+        with:
+          github-token: ${{ secrets.REPO_TOKEN }}
+          script: |
+            github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'Invalid App Name'
+            })
