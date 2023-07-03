@@ -1,4 +1,4 @@
-name: Branch Naming Policy Action
+name: Branch Naming Policy
 
 on:
   create:
@@ -8,16 +8,18 @@ on:
       - main
 
 jobs:
-  branch-naming-policy:
-    uses: ./.github/workflows/manage-branch.yml
+  demosite-branch-naming-policy:
+    uses: ./.github/workflows/branch-name-workflow.yml
     with:
       app-name: demosite
-      wording: feature,bugfix,bug,hotfix,enhancement
     secrets: inherit
-  plt-branch-naming-policy:
-    uses: ./.github/workflows/manage-branch.yml
+  plt-dashboard-branch-naming-policy:
+    uses: ./.github/workflows/branch-name-workflow.yml
     with:
-      app-name: plt-web
-      wording: feature,bugfix,bug,hotfix,enhancement
+      app-name: plt-dashboard
     secrets: inherit
-
+#   plt-web-branch-naming-policy:
+#     uses: ./.github/workflows/branch-name-workflow.yml
+#     with:
+#       app-name: plt-web
+#     secrets: inherit
