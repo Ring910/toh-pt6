@@ -16,6 +16,13 @@ jobs:
       - name: Fetch Source
         uses: actions/checkout@v3
 
+      - name: Check Slash
+        uses: actions/github-script@v6
+        with:
+          script: |
+            
+      - name: Check App Name
+        
       - name: Check App Name
         uses: actions/github-script@v6
         with:
