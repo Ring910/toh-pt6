@@ -10,7 +10,7 @@ on:
 
 jobs:
   branch-naming-policy:
-    runs-on: [self-hosted, Windows, build]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Fetch Source
