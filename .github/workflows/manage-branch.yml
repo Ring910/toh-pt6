@@ -20,7 +20,13 @@ jobs:
         id: getSlashOutput
         with:
           script: |
-            const branch_name = context.payload.ref
+            let branch_name = ""
+            if(context.payload.pull_request){
+              branch_name = context.payload.pull_request.head.ref
+            }else{
+              branch_name = context.payload.ref
+            }
+            console.log(branch_name)
             let no_of_slash = (branch_name.split('/').length - 1)
             let app_name = branch_name.substring(0, branch_name.indexOf('/'));
             
