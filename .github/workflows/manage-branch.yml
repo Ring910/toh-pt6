@@ -1,12 +1,17 @@
 name: Branch Naming Policy
 
 on:
-  workflow_call:
-    inputs:
-      app-name:
-        description: "Name of the application"
-        required: true
-        type: string
+#   workflow_call:
+#     inputs:
+#       app-name:
+#         description: "Name of the application"
+#         required: true
+#         type: string
+  create:
+  delete:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   branch-naming-policy:
