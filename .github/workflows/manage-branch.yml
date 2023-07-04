@@ -35,7 +35,7 @@ jobs:
       
       - name: Check App Name 1
         uses: actions/github-script@v6
-        if: ${{ steps.getSlashOutput.outputs.slashOutput }} > 1
+        if: ${{ steps.getSlashOutput.outputs.slashOutput > 1 }} 
         id: applist
         with:
           script: |
