@@ -36,6 +36,7 @@ jobs:
       - name: Check App Name 1
         uses: actions/github-script@v6
         if: ${{ steps.getSlashOutput.outputs.slashOutput }} > 1
+        id: applist
         with:
           script: |
             const fs = require('fs');
@@ -48,7 +49,8 @@ jobs:
                   app_owners[result[0]] = result.splice(1, result.length).join();
                 }
               });
-      
+            core.setOutput('applist_output', Object.keys(owners).toString());
+            
 #       - name: Check App Name
 #         uses: actions/github-script@v6
 #         if: ${{ steps.getSlashOutput.outputs.slashOutput }} > 1
@@ -82,10 +84,11 @@ jobs:
         uses: Ring910/branch-naming@v1
         if: (github.ref_type == 'branch' || github.ref_type == 'pull_request') && success()
         with:
-          regex: '^${{ steps.getSlashOutput.outputs.slashOutput }}/(feature|bugfix|hotfix)\/.*'
-          app-name: ${{ steps.getSlashOutput.outputs.slashOutput }}
+          regex: '^${{ steps.getSlashOutput.outputs.appName }}/(feature|bugfix|hotfix)\/.*'
+          app-name: ${{ steps.getSlashOutput.outputs.appName }}
           token: ${{ secrets.REPO_TOKEN }}
-
+          app-name-list: ${{ steps.applist.outputs.applist_output }}
+          
 #       - name: Remove Invalid App Name Label
 #         uses: actions/github-script@v6
 #         if: contains(github.event.pull_request.labels.*.name, 'Invalid App Name') && success()
