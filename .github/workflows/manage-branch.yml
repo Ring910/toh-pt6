@@ -21,8 +21,6 @@ jobs:
         with:
           script: |
             console.log(context.payload.ref)
-            
-      - name: Check App Name
         
       - name: Check App Name
         uses: actions/github-script@v6
