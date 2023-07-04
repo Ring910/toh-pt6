@@ -1,12 +1,6 @@
 name: Branch Naming Policy
 
 on:
-#   workflow_call:
-#     inputs:
-#       app-name:
-#         description: "Name of the application"
-#         required: true
-#         type: string
   create:
   delete:
   pull_request:
@@ -33,7 +27,7 @@ jobs:
             core.setOutput('slashOutput', no_of_slash)
             core.setOutput('appName', app_name)
       
-      - name: Check App Name 1
+      - name: Check App Name
         uses: actions/github-script@v6
         if: ${{ steps.getSlashOutput.outputs.slashOutput > 1 }} 
         id: applist
@@ -50,54 +44,12 @@ jobs:
                 }
               });
             core.setOutput('applist_output', Object.keys(app_owners).toString());
-            
-#       - name: Check App Name
-#         uses: actions/github-script@v6
-#         if: ${{ steps.getSlashOutput.outputs.slashOutput }} > 1
-#         with:
-#           github-token: ${{ secrets.REPO_TOKEN }}
-#           script: |
-#             const fs = require('fs');
-#             const path = './.github/APPOWNERS';
-#             var app_owners = {};
-#             await fs.readFileSync(path).toString().split("\n")
-#               .forEach((el) => {
-#                 if (!el.startsWith("#") && el.trim() != "") {
-#                   let result = el.trim().split(/\s+/);
-#                   app_owners[result[0]] = result.splice(1, result.length).join();
-#                 }
-#               });
-
-#             var checkExist = Object.keys(app_owners).some((name) => name == '${{ steps.getSlashOutput.outputs.slashOutput }}');
-
-#             if(!checkExist){
-#               core.setFailed("The application name is not exist.")
-#               github.rest.issues.addLabels({
-#                 issue_number: context.issue.number,
-#                 owner: context.repo.owner,
-#                 repo: context.repo.repo,
-#                 labels: [ 'Invalid App Name' ]
-#               })
-#             }
-
+          
       - name: Run Branch Naming Policy Action
         uses: Ring910/branch-naming@v1
-        if: (github.ref_type == 'branch' || github.ref_type == 'pull_request') && success()
+        if: (github.ref_type == 'branch' || github.ref_type == 'pull_request')
         with:
           regex: '^${{ steps.getSlashOutput.outputs.appName }}/(feature|bugfix|hotfix)\/.*'
-          app-name: ${{ steps.getSlashOutput.outputs.appName }}
           token: ${{ secrets.REPO_TOKEN }}
           app-name-list: ${{ steps.applist.outputs.applist_output }}
           
-#       - name: Remove Invalid App Name Label
-#         uses: actions/github-script@v6
-#         if: contains(github.event.pull_request.labels.*.name, 'Invalid App Name') && success()
-#         with:
-#           github-token: ${{ secrets.REPO_TOKEN }}
-#           script: |
-#             github.rest.issues.removeLabel({
-#                 issue_number: context.issue.number,
-#                 owner: context.repo.owner,
-#                 repo: context.repo.repo,
-#                 name: 'Invalid App Name'
-#             })
