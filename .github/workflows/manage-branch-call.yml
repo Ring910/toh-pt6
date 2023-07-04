@@ -9,12 +9,12 @@ on:
 
 jobs:
   demosite-branch-naming-policy:
-    uses: ./.github/workflows/branch-name-workflow.yml
+    uses: ./.github/workflows/manage-branch.yml
     with:
       app-name: demosite
     secrets: inherit
   plt-dashboard-branch-naming-policy:
-    uses: ./.github/workflows/branch-name-workflow.yml
+    uses: ./.github/workflows/manage-branch.yml
     with:
       app-name: plt-dashboard
     secrets: inherit
