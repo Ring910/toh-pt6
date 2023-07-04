@@ -20,7 +20,10 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const branch_name = context.payload.ref
+            let no_of_slash = (branch_name.split('/').length - 1)
             console.log(context.payload.ref)
+            console.log(no_of_slash)
         
       - name: Check App Name
         uses: actions/github-script@v6
