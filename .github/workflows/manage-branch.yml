@@ -1,8 +1,8 @@
 name: Branch Naming Policy
 
 on:
-  create:
-  delete:
+#   create:
+#   delete:
   pull_request:
     branches:
       - ref
