@@ -18,17 +18,20 @@ jobs:
 
       - name: Check Slash
         uses: actions/github-script@v6
+        id: getSlashOutput
         with:
           script: |
             const branch_name = context.payload.ref
             let no_of_slash = (branch_name.split('/').length - 1)
-            console.log(context.payload.ref)
-            console.log(no_of_slash)
-        
-      - name: Check App Name
+            let app_name = branch_name.substring(0, branch_name.indexOf('/'));
+            
+            core.setOutput('slashOutput', no_of_slash)
+            core.setOutput('appName', app_name)
+      
+      - name: Check App Name 1
         uses: actions/github-script@v6
+        if: ${{ steps.getSlashOutput.outputs.slashOutput }} > 1
         with:
-          github-token: ${{ secrets.REPO_TOKEN }}
           script: |
             const fs = require('fs');
             const path = './.github/APPOWNERS';
@@ -40,36 +43,53 @@ jobs:
                   app_owners[result[0]] = result.splice(1, result.length).join();
                 }
               });
+      
+#       - name: Check App Name
+#         uses: actions/github-script@v6
+#         if: ${{ steps.getSlashOutput.outputs.slashOutput }} > 1
+#         with:
+#           github-token: ${{ secrets.REPO_TOKEN }}
+#           script: |
+#             const fs = require('fs');
+#             const path = './.github/APPOWNERS';
+#             var app_owners = {};
+#             await fs.readFileSync(path).toString().split("\n")
+#               .forEach((el) => {
+#                 if (!el.startsWith("#") && el.trim() != "") {
+#                   let result = el.trim().split(/\s+/);
+#                   app_owners[result[0]] = result.splice(1, result.length).join();
+#                 }
+#               });
 
-            var checkExist = Object.keys(app_owners).some((name) => name == '${{inputs.app-name}}');
+#             var checkExist = Object.keys(app_owners).some((name) => name == '${{ steps.getSlashOutput.outputs.slashOutput }}');
 
-            if(!checkExist){
-              core.setFailed("The application name is not exist.")
-              github.rest.issues.addLabels({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                labels: [ 'Invalid App Name' ]
-              })
-            }
+#             if(!checkExist){
+#               core.setFailed("The application name is not exist.")
+#               github.rest.issues.addLabels({
+#                 issue_number: context.issue.number,
+#                 owner: context.repo.owner,
+#                 repo: context.repo.repo,
+#                 labels: [ 'Invalid App Name' ]
+#               })
+#             }
 
       - name: Run Branch Naming Policy Action
         uses: Ring910/branch-naming@v1
         if: (github.ref_type == 'branch' || github.ref_type == 'pull_request') && success()
         with:
-          regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
-          app-name: ${{ inputs.app-name }}
+          regex: '^${{ steps.getSlashOutput.outputs.slashOutput }}/(feature|bugfix|hotfix)\/.*'
+          app-name: ${{ steps.getSlashOutput.outputs.slashOutput }}
           token: ${{ secrets.REPO_TOKEN }}
 
-      - name: Remove Invalid App Name Label
-        uses: actions/github-script@v6
-        if: contains(github.event.pull_request.labels.*.name, 'Invalid App Name') && success()
-        with:
-          github-token: ${{ secrets.REPO_TOKEN }}
-          script: |
-            github.rest.issues.removeLabel({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'Invalid App Name'
-            })
+#       - name: Remove Invalid App Name Label
+#         uses: actions/github-script@v6
+#         if: contains(github.event.pull_request.labels.*.name, 'Invalid App Name') && success()
+#         with:
+#           github-token: ${{ secrets.REPO_TOKEN }}
+#           script: |
+#             github.rest.issues.removeLabel({
+#                 issue_number: context.issue.number,
+#                 owner: context.repo.owner,
+#                 repo: context.repo.repo,
+#                 name: 'Invalid App Name'
+#             })
