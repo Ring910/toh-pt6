@@ -1,11 +1,11 @@
 name: Branch Naming Policy
 
 on:
-#   create:
-#   delete:
+  create:
+  delete:
   pull_request:
     branches:
-      - ref
+      - main
 
 jobs:
   branch-naming-policy:
@@ -53,5 +53,4 @@ jobs:
           token: ${{ secrets.REPO_TOKEN }}
           app-name: ${{ steps.getSlashOutput.outputs.appName }}
           app-name-list: ${{ steps.applist.outputs.applist_output }}
-          app: true
           
