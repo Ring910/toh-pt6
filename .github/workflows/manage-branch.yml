@@ -51,7 +51,7 @@ jobs:
             }
 
       - name: Run Branch Naming Policy Action
-        uses: intel-manufacturing/frameworks.actions.manufacturing.branch-naming-policy@v1.0.0
+        uses: Ring910/branch-naming@v1
         if: (github.ref_type == 'branch' || github.ref_type == 'pull_request') && success()
         with:
           regex: '^${{inputs.app-name}}/(feature|bugfix|hotfix)\/.*'
