@@ -52,4 +52,5 @@ jobs:
           regex: '^${{ steps.getSlashOutput.outputs.appName }}/(feature|bugfix|hotfix)\/.*'
           token: ${{ secrets.REPO_TOKEN }}
           app-name-list: ${{ steps.applist.outputs.applist_output }}
+          app: true
           
