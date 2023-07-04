@@ -49,7 +49,7 @@ jobs:
                   app_owners[result[0]] = result.splice(1, result.length).join();
                 }
               });
-            core.setOutput('applist_output', Object.keys(owners).toString());
+            core.setOutput('applist_output', Object.keys(app_owners).toString());
             
 #       - name: Check App Name
 #         uses: actions/github-script@v6
