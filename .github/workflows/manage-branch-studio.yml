@@ -1,11 +1,11 @@
 name: Branch Naming Policy Studio
 
 on:
-  create:
-  delete:
+  # create:
+  # delete:
   pull_request:
     branches:
-      - main
+      # - main
       - ref
 
 jobs:
