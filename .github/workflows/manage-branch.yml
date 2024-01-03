@@ -1,11 +1,11 @@
 name: Branch Naming Policy
 
 on:
-  # create:
-  # delete:
+  create:
+  delete:
   pull_request:
     branches:
-      - ref
+      - main
 
 jobs:
   branch-naming-policy:
